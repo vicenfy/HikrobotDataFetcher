@@ -11,8 +11,8 @@ summaryListUrl = baseUrl + '/en/Api/Foreground/Vision/VisionProductContent?'
 detailUrl = baseUrl + '/en/Api/Foreground/Vision/VisionProductConfig?'
 
 
-def getSummaryData(firstModuleId): # 1 file, 29 lines
-    paramsSummary = {'firstModuleId': firstModuleId, 'page': 1, 'secondaryModuleId': 42, 'size': 100, 'screening': None}
+def getSummaryData(firstModuleId, secondaryModuleId, page): # 1 file, 29 lines
+    paramsSummary = {'firstModuleId': firstModuleId, 'page': page, 'secondaryModuleId': secondaryModuleId, 'size': 100, 'screening': None}
     resp = requests.get(summaryListUrl, paramsSummary)
     data = resp.json()
     visionProductConfig = data['data']['VisionProductConfig'] # list, len = 29
@@ -48,7 +48,7 @@ def getDetailedData(productSummary): # 29 files, each file has 33 columns -> eac
                 dataDict[respLine['name']] = respLine['value']
             dataList.append(dataDict)
     print('Now exporting detailed data as CSV file')
-    exportObjectAsCSV(titleList, dataList, 'Detail')
+    exportObjectAsCSV(titleList, dataList, 'Detail', True)
     print('Successfully fetched all Hikrobot data!')
 
 
@@ -75,5 +75,5 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    productSummary = getSummaryData(78)
+    productSummary = getSummaryData(78, 42, 1)
     getDetailedData(productSummary)
