@@ -61,14 +61,14 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
     print(titles)
     if onlyOneFile:
         with open('c:\\hikdata\\' + filePattern + '.csv', mode='w') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
+            csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
             csv_writer.writerow(titles)
             for index, data in enumerate(dataList):
                 csv_writer.writerow(list(data.values()))
     else:
         for index, data in enumerate(dataList):
             with open('c:\\hikdata\\' + str(index) + '-' + filePattern + '.csv', mode='w') as csv_file:
-                csv_writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
+                csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
                 csv_writer.writerow(titles)
                 csv_writer.writerow(list(data.values()))
 
