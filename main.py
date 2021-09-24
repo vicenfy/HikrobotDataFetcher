@@ -76,4 +76,4 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     productSummary = getSummaryData(78)
-    # getDetailedData(productSummary)
+    getDetailedData(productSummary)
