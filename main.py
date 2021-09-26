@@ -9,6 +9,7 @@ import csv
 baseUrl = 'https://www.hikrobotics.com'
 summaryListUrl = baseUrl + '/en/Api/Foreground/Vision/VisionProductContent?'
 detailUrl = baseUrl + '/en/Api/Foreground/Vision/VisionProductConfig?'
+introductionUrl = baseUrl + '/en/Api/Foreground/Vision/VisionProductIntroduction?'
 
 
 def getSummaryData(firstModuleId, secondaryModuleId, page): # 1 file, 29 lines
@@ -18,15 +19,15 @@ def getSummaryData(firstModuleId, secondaryModuleId, page): # 1 file, 29 lines
     visionProductConfig = data['data']['VisionProductConfig'] # list, len = 29
     visionProductContent = data['data']['VisionProductContent']['records'] # list, len = 29
     # make sure that the title list and the data have the same dimension
-    titleList = ['id', 'productModel', 'Sensor', 'Resolution', 'Max. Frame Rate', 'Data Interface', 'Mono/Color']
+    titleList = ['id', 'productModel', 'productIntroduction', 'Resolution', 'Max. Frame Rate', 'Mono/Color', 'Focal Length', ]
     dataList = []
     for i, productConfig in enumerate(visionProductConfig):
         dataDict = {}
         for j in range(len(titleList)):
-            if j < 2:
+            if j < 3:
                 dataDict[titleList[j]] = visionProductContent[i][titleList[j]]
             else:
-                dataDict[titleList[j]] = productConfig[j - 2]
+                dataDict[titleList[j]] = productConfig[j - 3]
         dataList.append(dataDict)
     print('Now exporting summary(table) data as CSV file')
     exportObjectAsCSV(titleList, dataList, 'Table', True)
@@ -61,19 +62,19 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
     print(titles)
     if onlyOneFile:
         with open('c:\\hikdata\\' + filePattern + '.csv', mode='w') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
+            csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\r\n')
             csv_writer.writerow(titles)
             for index, data in enumerate(dataList):
                 csv_writer.writerow(list(data.values()))
     else:
         for index, data in enumerate(dataList):
             with open('c:\\hikdata\\' + str(index) + '-' + filePattern + '.csv', mode='w') as csv_file:
-                csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
+                csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\r\n')
                 csv_writer.writerow(titles)
                 csv_writer.writerow(list(data.values()))
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    productSummary = getSummaryData(78, 42, 1)
+    productSummary = getSummaryData(38, 159, 1)
     getDetailedData(productSummary)
