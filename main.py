@@ -33,6 +33,8 @@ def getSummaryData(firstModuleId, secondaryModuleId, page): # 1 file, 29 lines
     exportObjectAsCSV(titleList, dataList, 'Table', True)
     return visionProductContent
 
+def replaceLineTerminator(orgString):
+    return orgString.replace('\r\n', ' ')
 
 def getDetailedData(productSummary): # 29 files, each file has 33 columns -> each dict creates a file
     titleList = []
@@ -45,7 +47,7 @@ def getDetailedData(productSummary): # 29 files, each file has 33 columns -> eac
         if len(respData) > 0:
             for respLine in respData:
                 if productIdx == 0:
-                    titleList.append(respLine['name'])
+                    titleList.append(replaceLineTerminator(respLine['name'].strip()))
                 dataDict[respLine['name']] = respLine['value']
             dataList.append(dataDict)
     print('Now exporting detailed data as CSV file')
@@ -62,14 +64,14 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
     print(titles)
     if onlyOneFile:
         with open('c:\\hikdata\\' + filePattern + '.csv', mode='w') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\r\n')
+            csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
             csv_writer.writerow(titles)
             for index, data in enumerate(dataList):
                 csv_writer.writerow(list(data.values()))
     else:
         for index, data in enumerate(dataList):
             with open('c:\\hikdata\\' + str(index) + '-' + filePattern + '.csv', mode='w') as csv_file:
-                csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\r\n')
+                csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
                 csv_writer.writerow(titles)
                 csv_writer.writerow(list(data.values()))
 
