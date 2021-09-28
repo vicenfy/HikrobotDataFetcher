@@ -19,22 +19,28 @@ def getSummaryData(firstModuleId, secondaryModuleId, page): # 1 file, 29 lines
     visionProductConfig = data['data']['VisionProductConfig'] # list, len = 29
     visionProductContent = data['data']['VisionProductContent']['records'] # list, len = 29
     # make sure that the title list and the data have the same dimension
-    titleList = ['id', 'productModel', 'productIntroduction', 'Resolution', 'Max. Frame Rate', 'Mono/Color', 'Focal Length', ]
+    titleList = ['id', 'productModel', 'productIntroduction', 'Sensor', 'Resolution', 'Max. frame rate',
+                 'Data Interface', 'Mono/Color']  # CS, CA, CE, CB, GL
+    # titleList = ['id', 'productModel', 'productIntroduction', 'Resolution', 'Max. Frame Rate', 'Mono/Color', 'Focal Length', ]
     dataList = []
     for i, productConfig in enumerate(visionProductConfig):
         dataDict = {}
         for j in range(len(titleList)):
             if j < 3:
-                dataDict[titleList[j]] = visionProductContent[i][titleList[j]]
+                # delete return lines for introductions
+                if titleList[j] == 'productIntroduction':
+                    dataDict[titleList[j]] = replaceLineTerminator(visionProductContent[i][titleList[j]], '\n')
+                else:
+                    dataDict[titleList[j]] = visionProductContent[i][titleList[j]]
             else:
-                dataDict[titleList[j]] = productConfig[j - 3]
+                dataDict[titleList[j]] = replaceLineTerminator(productConfig[j - 3], '\n')
         dataList.append(dataDict)
     print('Now exporting summary(table) data as CSV file')
     exportObjectAsCSV(titleList, dataList, 'Table', True)
     return visionProductContent
 
-def replaceLineTerminator(orgString):
-    return orgString.replace('\r\n', ' ')
+def replaceLineTerminator(orgString, terminator):
+    return orgString.replace(terminator, ' ')
 
 def getDetailedData(productSummary): # 29 files, each file has 33 columns -> each dict creates a file
     titleList = []
@@ -47,8 +53,8 @@ def getDetailedData(productSummary): # 29 files, each file has 33 columns -> eac
         if len(respData) > 0:
             for respLine in respData:
                 if productIdx == 0:
-                    titleList.append(replaceLineTerminator(respLine['name'].strip()))
-                dataDict[respLine['name']] = respLine['value']
+                    titleList.append(replaceLineTerminator(respLine['name'].strip(), '\r\n'))
+                dataDict[respLine['name']] = replaceLineTerminator(respLine['value'], '\n')
             dataList.append(dataDict)
     print('Now exporting detailed data as CSV file')
     exportObjectAsCSV(titleList, dataList, 'Detail', True)
@@ -78,5 +84,5 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    productSummary = getSummaryData(38, 159, 1)
+    productSummary = getSummaryData(78, 134, 1)
     getDetailedData(productSummary)
