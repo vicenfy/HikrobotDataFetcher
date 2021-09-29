@@ -9,10 +9,14 @@ import json
 
 baseUrl = 'http://localhost:8080/api/v1'
 
-def createInstanceInDB(url, payload):
-    return requests.request("POST", url, data=payload)
+def createInstanceInDB(url, headers, payload):
+    return requests.request("POST", url, headers=headers, data=payload)
 
 def readCsvAndWrite(filePath, productEndpoint):
+    headers = {
+        'content-type': "application/json",
+        'cache-control': "no-cache"
+    }
     with open(filePath) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter='#')
         titleList = []
@@ -24,6 +28,6 @@ def readCsvAndWrite(filePath, productEndpoint):
                 for i in range(len(titleList)):
                     rowDataDict[titleList[i]] = row[i]
                 jsonString = json.dumps(rowDataDict)
-                createInstanceInDB(baseUrl + '/' + productEndpoint, jsonString)
+                createInstanceInDB(baseUrl + '/' + productEndpoint, headers, jsonString)
 
-readCsvAndWrite('c:\\hikdata\\Hik\\Area_Scan_Camera_with_Details\\' + 'caTable.csv', 'ascameras')
+readCsvAndWrite('c:\\hikdata\\Hik\\Area_Scan_Camera_with_Details\\' + 'caTable - Kopie.csv', 'ascameras')
