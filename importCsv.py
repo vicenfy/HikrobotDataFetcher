@@ -12,6 +12,19 @@ baseUrl = 'http://localhost:8080/api/v1'
 def createInstanceInDB(url, headers, payload):
     return requests.request("POST", url, headers=headers, data=payload)
 
+def convertNameListToCamelCase(nameList):
+    newList = []
+    for name in nameList:
+        stringList = name.replace('/', ' ').replace('.', ' ').lower().split(' ')
+        string = ''
+        for i in range(len(stringList)):
+            if i == 0:
+                string += stringList[i]
+            else:
+                string += stringList[i].capitalize()
+        newList.append(string)
+    return newList
+
 def readCsvAndWrite(filePath, productEndpoint):
     headers = {
         'content-type': "application/json",
@@ -22,7 +35,7 @@ def readCsvAndWrite(filePath, productEndpoint):
         titleList = []
         for idx, row in enumerate(csv_reader):
             if idx == 0:
-                titleList = row
+                titleList = convertNameListToCamelCase(row)
             else:
                 rowDataDict = {}
                 for i in range(len(titleList)):
@@ -30,4 +43,4 @@ def readCsvAndWrite(filePath, productEndpoint):
                 jsonString = json.dumps(rowDataDict)
                 createInstanceInDB(baseUrl + '/' + productEndpoint, headers, jsonString)
 
-readCsvAndWrite('c:\\hikdata\\Hik\\Area_Scan_Camera_with_Details\\' + 'caTable - Kopie.csv', 'ascameras')
+readCsvAndWrite('c:\\hikdata\\' + 'Detail.csv', 'ascameras')
