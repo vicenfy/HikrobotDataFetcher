@@ -76,7 +76,7 @@ def getDetailedData(productSummary): # 29 files, each file has 33 columns -> eac
 
     # samrt camera 2k,3k,7k #2k Certifications
     titleList = ['Model', 'Type', 'Vision tools', 'Solution capacity', 'Communication protocol', 'Sensor type', 'Pixel size', 'Sensor size', 'Resolution', 'Max. Frame Rate', 'Dynamic range',
-                 'SNR', 'Gain', 'Exposure time', 'Pixel format', 'Exposure time', 'Mono/Color', 'Memory', 'Storage', 'Interface', 'Ethernet', 'Digital I/O', 'Power supply', 'Power consumption', 'Lens mount',
+                 'SNR', 'Gain', 'Exposure time', 'Pixel format', 'Mono/Color', 'Memory', 'Storage', 'Interface', 'Ethernet', 'Digital I/O', 'Power supply', 'Power consumption', 'Lens mount',
                  'Lens focal length', 'Lens cap', 'Lighting', 'Indicator', 'Dimension', 'Weight', 'Ingress protection', 'Temperature', 'Humidity', 'Operating method', 'Certifications'] #samrt camera
 
     # # samrt camera op
