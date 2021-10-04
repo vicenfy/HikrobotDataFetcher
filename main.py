@@ -108,14 +108,14 @@ def exportObjectAsCSV(titles, dataList, filePattern, onlyOneFile=False):
     """
     print('Now trying to dump CSV with the title', titles)
     if onlyOneFile:
-        with open('C:\\Users\\Pontesino\\Dropbox\\sogoo\\Hik\\' + filePattern + '.csv', mode='w', encoding="utf-8") as csv_file:
+        with open('C:\\Users\\Pandafan\\Dropbox\\sogoo\\Hik\\' + filePattern + '.csv', mode='w', encoding="utf-8") as csv_file:
             csv_writer = csv.writer(csv_file, delimiter='#', quotechar="'", lineterminator='\n')
             csv_writer.writerow(titles)
             for index, data in enumerate(dataList):
                 csv_writer.writerow(list(data.values()))
     else:
         for index, data in enumerate(dataList):
-            with open('C:\\Users\\Pontesino\\Dropbox\\sogoo\\Hik\\' + str(index) + '-' + filePattern + '.csv', mode='w') as csv_file:
+            with open('C:\\Users\\Pandafan\\Dropbox\\sogoo\\Hik\\' + str(index) + '-' + filePattern + '.csv', mode='w') as csv_file:
                 csv_writer = csv.writer(csv_file, delimiter=';', quotechar="'", lineterminator='\n')
                 csv_writer.writerow(titles)
                 csv_writer.writerow(list(data.values()))
